@@ -1,6 +1,24 @@
-import './App.css';
 import Counter from './Counter';
 import Player from './Batsman';
+// import Users from './Users';
+import Posts from './Posts';
+import Friends from './Friends';
+import './App.css';
+import { Suspense } from 'react';
+
+// const fetchUsers = fetch('https://jsonplaceholder.typicode.com/users').then(
+//   (res) => res.json()
+// );
+
+const fetchFriends = async () => {
+  const res = await fetch('https://jsonplaceholder.typicode.com/users');
+  return await res.json();
+};
+
+const fetchPosts = async () => {
+  const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+  return await res.json();
+};
 
 function App() {
   function handleClick() {
@@ -25,7 +43,20 @@ function App() {
 
   return (
     <>
-      <h1>Vite + React</h1>
+      <h1>Explore React</h1>
+
+      <Suspense fallback={<h3>Friends Are Coming...</h3>}>
+        <Friends fetchFriends={fetchFriends()}></Friends>
+      </Suspense>
+
+      {/* <Suspense fallback={<h3>Loading...</h3>}>
+        <Users fetchUsers={fetchUsers}></Users>
+      </Suspense> */}
+
+      <Suspense fallback={<h3>Posts Are Coming...</h3>}>
+        <Posts fetchPosts={fetchPosts()}></Posts>
+      </Suspense>
+
       {/* <button onClick="handleClick()">Click Me</button>
       <br />
       <br /> */}
@@ -44,9 +75,7 @@ function App() {
         <button onClick={handleClick3} className="btn-space">
           Click Me 3
         </button>
-        <button onClick={() => alert("I'm Clicked 4")}>
-          Click Me 4
-        </button>
+        <button onClick={() => alert("I'm Clicked 4")}>Click Me 4</button>
         <br />
         <br />
         {/* <button onClick={handleAdd5(7)}>Click to Add 5</button> */}
